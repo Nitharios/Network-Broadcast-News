@@ -33,7 +33,6 @@ const server = net.createServer((client) => {
     }
   });
 
-
 });
 
 server.on('error', (err) => {
