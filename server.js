@@ -24,14 +24,14 @@ const server = net.createServer((client) => {
     console.log('Server: Client disconnected');
   });
 
-  // process.stdin.on('readable', () => {
-  //   const data = process.stdin.read();
+  process.stdin.on('readable', () => {
+    const data = process.stdin.read();
 
-  //   if (data !== null) {
-  //     client.write("Server: " + data.toString());
-  //     client.pipe(client);
-  //   }
-  // });
+    if (data !== null) {
+      client.write("Server: " + data.toString());
+      // client.pipe(client);
+    }
+  });
 
 
 });
