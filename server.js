@@ -13,7 +13,9 @@ const server = net.createServer((client) => {
   let userTag = '[' + client.remoteAddress + ']' + ': ';
   client.setEncoding('utf8');
   console.log(system + user + ' connected');
-  
+  console.log(client);
+
+
   // need code that asks user for userName and password
   client.write(system + 'Welcome ' + user + '!');
 
@@ -24,7 +26,6 @@ const server = net.createServer((client) => {
 
   // reads what data comes from client
   client.on('data', (data) => {
-
     console.log(userTag + data);
     sendToAll(userTag, data);
 
