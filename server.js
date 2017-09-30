@@ -1,16 +1,22 @@
 // jshint esversion:6
-
 // telnet localhost 'port#'
 const net = require('net');
-const server = net.createServer((c) => {
+process.stdin.setEncoding('utf8');
+
+const server = net.createServer((client) => {
   // 'connection listener'
   console.log('client connected');
+  // console.log(client);
+  client.on('data', (data) => {
+    console.log(data.toString());
+  });
 
-  c.on('end', () => {
+  client.on('end', () => {
     console.log('client disconnected');
   });
-  c.write('Hello client!\r\n');
-  c.pipe(c);
+
+  client.write('Server says: Hello client!\n');
+  client.pipe(client);
 
   });
 
@@ -18,11 +24,11 @@ server.on('error', (err) => {
   throw err;
 });
 
-  server.on('data', (data) => {
-    console.log(data.toString());
-    server.end();
-  });
+  // server.on('data', (data) => {
+  //   console.log(data.toString());
+  //   server.end();
+  // });
 
 server.listen(6969, '0.0.0.0', () => {
-  console.log('server bound');
+  console.log('Server Connected');
 });

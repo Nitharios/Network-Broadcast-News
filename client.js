@@ -1,17 +1,32 @@
 // jshint esversion:6
-
 const net = require('net');
-const socket = new net.connect(6969, function() {
+
+const client = new net.connect(6969, '0.0.0.0', () => {
   console.log('Connected to server!');
+  client.write('Client: Hello server!');
+
+  process.stdin.on('readable', () => {
+    const chunk = process.stdin.read();
+    
+    if (chunk !== null) {
+      // console.log(chunk.toString());
+      client.write(chunk.toString());
+    }
+  });
 });
 
-socket.on('data', function(data) {
-  console.log(data.toString());
-  // socket.end();
-});
+// client.on('data', (data) => {
+//   console.log(data.toString());
+//   // client.end();
+// });
 
-socket.on('error', (err) => {
+client.on('error', (err) => {
   throw err;
 });
 
-// socket.connect(6969, '0.0.0.0');
+client.on('end', () => {
+  console.log('Client: Disconnected from server');
+});
+
+// client.listen(6969, '0.0.0.0');
+// client.connect(6969, '0.0.0.0');
