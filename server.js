@@ -7,32 +7,42 @@ const alert = '[ALERT]: ';
 // process.stdin.setEncoding('utf8');
 // this is where client information will be
 let clientInfo = [];
+let user;
 
 const server = net.createServer((client) => {
-  let user = client.remoteAddress;
-  let userTag = '[' + client.remoteAddress + ']' + ': ';
-  client.setEncoding('utf8');
-  console.log(system + user + ' connected');
-  console.log(client);
+  user = client.remotePort;
+  let userTag = '[' + user + ']' + ': ';
 
+  console.log(system + user + ' connected');
 
   // need code that asks user for userName and password
-  client.write(system + 'Welcome ' + user + '!');
-
-  // stores user info 
-  clientInfo.push(client);
-
-  // writes string to client
+  client.write(system + 'Welcome ' + user + '!\n');
+  // prompts user for login info
+  if (!client.userName) client.write(system + 'Enter your userName');
 
   // reads what data comes from client
   client.on('data', (data) => {
     console.log(userTag + data);
-    sendToAll(userTag, data);
 
-    // client.write(userName + data);
-    // server.emit('Hello');
+    if (!client.userName) {
+      client.userName = data;
+      user = data;
+      userTag = '[' + user + ']' + ': ';
+      client.write(system + 'Enter your password');
+      // user = client.userName.toString();
+
+    } else if (!client.password) {
+      client.password = data;
+      clientInfo.push(client);
+      console.log(client.userName.toString());
+      console.log(client.password.toString());
+      console.log(user.toString());
+      console.log('numStored: ' + clientInfo.length);
+    
+    } else sendToAll(userTag, data);
   });
 
+  // handles input from Server console
   process.stdin.on('readable', () => {
     const data = process.stdin.read();
     if (data !== null) {
@@ -43,8 +53,10 @@ const server = net.createServer((client) => {
     }
   });
 
+  // console.log(clientInfo);
+
   client.on('end', () => {
-    console.log(system + client.remoteAddress + ' disconnected');
+    console.log(system + user + ' disconnected');
   });
 });
 
