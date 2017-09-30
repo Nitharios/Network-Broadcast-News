@@ -25,6 +25,16 @@ const server = net.createServer((client) => {
 
   // reads what data comes from client
   client.on('data', (data) => {
+
+    // if (!client.userName) client.userName = data;
+    // else if (!client.password) client.password = data;
+
+    // if (client.userName && client.password) {
+    //   clientInfo.push(client);
+    //   console.log("username: " + client.userName);
+    //   console.log("password: " + client.password);
+    // }
+
     console.log(user + data);
     sendToAll(user, data);
 
