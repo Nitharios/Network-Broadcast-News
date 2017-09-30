@@ -5,6 +5,12 @@ const client = new net.connect(6969, '0.0.0.0', () => {
   console.log('Connected to server!');
   client.write('Client: Hello server!');
 
+  // handles data from server
+  client.on('data', (data) => {
+    console.log(data.toString());
+  });
+
+  // handles what is input to the console
   process.stdin.on('readable', () => {
     const data = process.stdin.read();
     
@@ -12,7 +18,9 @@ const client = new net.connect(6969, '0.0.0.0', () => {
       client.write("Client: " + data.toString());
     }
   });
+
 });
+
 
 client.on('error', (err) => {
   throw err;
@@ -21,6 +29,10 @@ client.on('error', (err) => {
 client.on('end', () => {
   console.log('Client: Disconnected from server');
 });
+
+// client.listen(6969, '0.0.0.0', () => {
+
+// });
 
 // client.on('data', (data) => {
 //   console.log(data.toString());
