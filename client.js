@@ -2,9 +2,12 @@
 
 const net = require('net');
 const socket = new net.connect(6969, function() {
-  this.on('data', (chunk) => {
-    console.log(chunk.toString());
-  });
+  console.log('Connected to server!');
+});
+
+socket.on('data', function(data) {
+  console.log(data.toString());
+  // socket.end();
 });
 
 socket.on('error', (err) => {
