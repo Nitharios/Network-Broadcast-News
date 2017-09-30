@@ -6,19 +6,13 @@ const client = new net.connect(6969, '0.0.0.0', () => {
   client.write('Client: Hello server!');
 
   process.stdin.on('readable', () => {
-    const chunk = process.stdin.read();
+    const data = process.stdin.read();
     
-    if (chunk !== null) {
-      // console.log(chunk.toString());
-      client.write(chunk.toString());
+    if (data !== null) {
+      client.write("Client: " + data.toString());
     }
   });
 });
-
-// client.on('data', (data) => {
-//   console.log(data.toString());
-//   // client.end();
-// });
 
 client.on('error', (err) => {
   throw err;
@@ -27,6 +21,11 @@ client.on('error', (err) => {
 client.on('end', () => {
   console.log('Client: Disconnected from server');
 });
+
+// client.on('data', (data) => {
+//   console.log(data.toString());
+//   // client.end();
+// });
 
 // client.listen(6969, '0.0.0.0');
 // client.connect(6969, '0.0.0.0');
