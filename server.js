@@ -15,12 +15,12 @@ const server = net.createServer((client) => {
   console.log(system + user + ' connected');
   
   // need code that asks user for userName and password
+  client.write(system + 'Welcome ' + user + '!');
 
   // stores user info 
   clientInfo.push(client);
 
   // writes string to client
-  client.write(system + 'Welcome ' + user + '!');
 
   // reads what data comes from client
   client.on('data', (data) => {

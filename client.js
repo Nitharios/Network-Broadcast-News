@@ -2,7 +2,7 @@
 const net = require('net');
 
 const client = new net.connect(6969, () => {
-  console.log('Connected to server!');
+  console.log('Connected to the server!');
 
   // handles what is input to the console
   process.stdin.on('readable', () => {
@@ -25,7 +25,7 @@ client.on('error', (err) => {
 });
 
 client.on('end', () => {
-  console.log('Disconnected from server');
+  console.log('Disconnected from the server');
 });
 
 // client.listen(6969, '0.0.0.0', () => {
