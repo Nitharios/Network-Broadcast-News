@@ -12,9 +12,9 @@ const server = net.createServer((client) => {
   let userName = '[' + client.remoteAddress + ']' + ': ';
   client.setEncoding('utf8');
   console.log(userName + 'Connected');
-  // clientInfo.push(client);
+  clientInfo.push(client);
   // writes string to client
-  client.write(system + 'Welcome user!\n');
+  client.write(system + 'Welcome user!');
   // client.write(system + 'Please enter your name and password: ');
   // pipe will pipe what the client says to client
   // console.log(client);
@@ -23,7 +23,9 @@ const server = net.createServer((client) => {
   // reads what data comes from client
   client.on('data', (data) => {
     console.log(userName + data);
-    client.write(userName + data);
+    sendToAll(userName, data);
+
+    // client.write(userName + data);
     // server.emit('Hello');
   });
 
@@ -33,9 +35,10 @@ const server = net.createServer((client) => {
 
   process.stdin.on('readable', () => {
     const data = process.stdin.read();
-
     if (data !== null) {
-      client.write(admin + data.toString());
+      console.log(admin, data.toString());
+      sendToAll(admin, data);
+      // client.write(admin + data.toString());
       // client.pipe(client);
     }
   });
@@ -50,6 +53,12 @@ server.listen(6969, '0.0.0.0', () => {
   console.log(system + 'Server online');
 });
 
+/////// NON-SERVER SPECIFIC FUNCTIONS //////
+function sendToAll(user, data) {
+  clientInfo.forEach(function(clientData) {
+    clientData.write(user + data);
+  });
+}
   // server.on('data', (data) => {
   //   console.log(data.toString());
   //   server.end();
