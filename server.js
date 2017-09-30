@@ -9,41 +9,27 @@ const alert = '[ALERT]: ';
 let clientInfo = [];
 
 const server = net.createServer((client) => {
-  let user = '[' + client.remoteAddress + ']' + ': ';
+  let user = client.remoteAddress;
+  let userTag = '[' + client.remoteAddress + ']' + ': ';
   client.setEncoding('utf8');
-  console.log(user + 'Connected');
+  console.log(system + user + ' connected');
   
   // need code that asks user for userName and password
 
+  // stores user info 
   clientInfo.push(client);
+
   // writes string to client
-  client.write(system + 'Welcome user!');
-  // client.write(system + 'Please enter your name and password: ');
-  // pipe will pipe what the client says to client
-  // console.log(client);
-  // client.pipe(client);
+  client.write(system + 'Welcome ' + user + '!');
 
   // reads what data comes from client
   client.on('data', (data) => {
 
-    // if (!client.userName) client.userName = data;
-    // else if (!client.password) client.password = data;
-
-    // if (client.userName && client.password) {
-    //   clientInfo.push(client);
-    //   console.log("username: " + client.userName);
-    //   console.log("password: " + client.password);
-    // }
-
-    console.log(user + data);
-    sendToAll(user, data);
+    console.log(userTag + data);
+    sendToAll(userTag, data);
 
     // client.write(userName + data);
     // server.emit('Hello');
-  });
-
-  client.on('end', () => {
-    console.log(system + 'USER disconnected');
   });
 
   process.stdin.on('readable', () => {
@@ -56,6 +42,9 @@ const server = net.createServer((client) => {
     }
   });
 
+  client.on('end', () => {
+    console.log(system + client.remoteAddress + ' disconnected');
+  });
 });
 
 server.on('error', (err) => {
