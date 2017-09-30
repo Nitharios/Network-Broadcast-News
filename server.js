@@ -9,9 +9,12 @@ const alert = '[ALERT]: ';
 let clientInfo = [];
 
 const server = net.createServer((client) => {
-  let userName = '[' + client.remoteAddress + ']' + ': ';
+  let user = '[' + client.remoteAddress + ']' + ': ';
   client.setEncoding('utf8');
-  console.log(userName + 'Connected');
+  console.log(user + 'Connected');
+  
+  // need code that asks user for userName and password
+
   clientInfo.push(client);
   // writes string to client
   client.write(system + 'Welcome user!');
@@ -22,8 +25,8 @@ const server = net.createServer((client) => {
 
   // reads what data comes from client
   client.on('data', (data) => {
-    console.log(userName + data);
-    sendToAll(userName, data);
+    console.log(user + data);
+    sendToAll(user, data);
 
     // client.write(userName + data);
     // server.emit('Hello');
