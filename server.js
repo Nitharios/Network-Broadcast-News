@@ -9,9 +9,9 @@ const alert = '[ALERT]: ';
 let clientInfo = [];
 
 const server = net.createServer((client) => {
-  let userName = client.remoteAddress + ': ';
+  let userName = '[' + client.remoteAddress + ']' + ': ';
   client.setEncoding('utf8');
-  console.log(system + 'USER Connected');
+  console.log(userName + 'Connected');
   // clientInfo.push(client);
   // writes string to client
   client.write(system + 'Welcome user!\n');
@@ -24,6 +24,7 @@ const server = net.createServer((client) => {
   client.on('data', (data) => {
     console.log(userName + data);
     client.write(userName + data);
+    // server.emit('Hello');
   });
 
   client.on('end', () => {
