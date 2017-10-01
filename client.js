@@ -3,7 +3,7 @@ const net = require('net');
 const PORT = process.env.PORT || 6969;
 
 const client = new net.connect(PORT, () => {
-  console.log(`connected to client at port ${PORT}`);
+  console.log(`Connected to server at port ${PORT}`);
 
   // |---- readable
   // v                 v---- writable
