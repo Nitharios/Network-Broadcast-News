@@ -2,7 +2,7 @@
 // telnet localhost 'port#'
 const net = require('net');
 const system = '[System]';
-const admin = '[ADMIN]';
+const admin = 'ADMIN';
 const alert = '[ALERT]';
 
 const PORT = process.env.PORT || 6969;
@@ -12,6 +12,7 @@ let clientInfo = [];
 let user;
 
 const server = net.createServer((client) => {
+  client.setEncoding('utf8');
   // notifies the console that a user has connected
   console.log(`${alert}: User connected on port ${client.remotePort}`);
   
@@ -23,21 +24,22 @@ const server = net.createServer((client) => {
   
   // reads what data comes from client
   client.on('data', (data) => {
-    console.log(`${user}: ${data.slice(0, data.length-1).toString()}`);
+    console.log(`[${user}]: ${data.slice(0, data.length-1).toString()}`);
 
     if (!client.userName) {
-      client.userName = `[${data.slice(0, data.length-1)}]`;
+      client.userName = `${data.trim().toString()}`;
       user = data.slice(0, data.length-1);
 
-      client.write(`${system}: Welcome ${user}!\n`);
-      client.write(`${system}: Enter your password\n`);
+      client.write(`${system}: Welcome ${user}\n`);
+    //   client.write(`${system}: Enter your password\n`);
 
-    } else if (!client.password) {
-      client.password = data;
+    // } else if (!client.password) {
+    //   // stored in binary
+    //   client.password = data;
 
       console.log(`numStored: ${clientInfo.length}`);
     
-    } else sendToAll(`${client.userName.toString()}`, data.slice(0, data.length-1));
+    } else sendToAll(`${client.userName}`, data.slice(0, data.length-1));
   });
 
   // handles input from Server console
@@ -52,7 +54,7 @@ const server = net.createServer((client) => {
   });
 
   client.on('end', () => {
-    console.log(`${alert}: ${user} disconnected`);
+    console.log(`${alert}: ${user || client.remotePort} disconnected`);
     // sendToAll(alert, user + ' disconnected');
   });
 });
@@ -68,7 +70,7 @@ server.listen(PORT, () => {
 /////// NON-SERVER SPECIFIC FUNCTIONS //////
 function sendToAll(user, data) {
   clientInfo.forEach(function(clientData) {
-    clientData.write(`${user}: ${data}\n`);
+    clientData.write(`[${user}]: ${data.toString()}\n`);
   });
 }
 
