@@ -40,3 +40,18 @@ client.on('end', () => {
 
 // client.listen(6969, '0.0.0.0');
 // client.connect(6969, '0.0.0.0');
+
+/*
+const server = new net.Socket();
+server.connect(PORT, () => {
+  console.log(`connected to server at port ${PORT}`);
+
+  // |---- readable
+  // v                 v---- writable
+  process.stdin.pipe( server );
+
+  // |---- readable
+  // v         v---- writable
+  server.pipe( process.stdout );
+});
+*/

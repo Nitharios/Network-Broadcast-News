@@ -60,7 +60,7 @@ server.on('error', (err) => {
 });
 
 server.listen(PORT, () => {
-  console.log(system + 'Server listening on port: $`{$PORT}`');
+  console.log(system + `Server listening on port: ${PORT}`);
 });
 
 /////// NON-SERVER SPECIFIC FUNCTIONS //////
@@ -69,3 +69,27 @@ function sendToAll(user, data) {
     clientData.write(user + data);
   });
 }
+
+
+/*const server = net.createServer((client) => { // client -> socket
+  // when client connects, invoke this closure
+  console.log('client has connected');
+  // register the client into clients array
+  clients.push(client);
+
+  client.username = null;
+  // prompt for username;
+  client.write('What is your username?\n');
+
+  client.on('data', (data) => {
+    // the first message should be the client's username
+    if (client.username === null) {
+      //set the username to data
+      client.username = data.toString();
+      client.write(`Welcome ${client.username}`);
+    } else {
+      // broadcast the message to all other clients
+      broadcast(client, data.toString());
+    }
+  });
+});*/
