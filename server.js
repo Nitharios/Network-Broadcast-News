@@ -22,11 +22,11 @@ const server = net.createServer((client) => {
 
   // reads what data comes from client
   client.on('data', (data) => {
-    console.log(userTag + data);
+    console.log(userTag + data.slice(0, data.length-1));
 
     if (!client.userName) {
-      client.userName = data;
-      user = data;
+      client.userName = data.slice(0, data.length-1);
+      user = data.slice(0, data.length-1);
       userTag = '[' + user + ']' + ': ';
       client.write(system + 'Enter your password');
       // user = client.userName.toString();
@@ -34,20 +34,17 @@ const server = net.createServer((client) => {
     } else if (!client.password) {
       client.password = data;
       clientInfo.push(client);
-      console.log(client.userName.toString());
-      console.log(client.password.toString());
-      console.log(user.toString());
       console.log('numStored: ' + clientInfo.length);
     
-    } else sendToAll(userTag, data);
+    } else sendToAll(userTag, data.slice(0, data.length-1));
   });
 
   // handles input from Server console
   process.stdin.on('readable', () => {
     const data = process.stdin.read();
     if (data !== null) {
-      console.log(admin, data.toString());
-      sendToAll(admin, data);
+      console.log(admin, data.slice(0, data.length-1).toString());
+      sendToAll(admin, data.slice(0, data.length-1));
       // client.write(admin + data.toString());
       // client.pipe(client);
     }
