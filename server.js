@@ -17,7 +17,6 @@ const server = net.createServer((client) => {
   console.log(`${alert}: User connected on port ${client.remotePort}`);
   
   // stores new client info
-  clientInfo.push(client);
 
   // prompts user for login info
   client.write(`${system}: Enter your username\n`);
@@ -28,13 +27,14 @@ const server = net.createServer((client) => {
 
     if (!client.userName) {
       if (data.trim().toLowerCase().includes('admin') || 
-        clientInfo.find(index => index.userName === data.trim().toLowerCase())) { 
+        clientInfo.find(index => index.userName.toLowerCase() === data.trim().toLowerCase())) { 
         client.write(`${system}: Invalid username\n`);
 
       } else {
         client.userName = data.toString().trim();
         user = client.userName;
         client.write(`${system}: Welcome ${user}\n`);
+        clientInfo.push(client);
       }
     //   client.write(`${system}: Enter your password\n`);
 
