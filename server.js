@@ -27,10 +27,15 @@ const server = net.createServer((client) => {
     console.log(`[${user}]: ${data.toString().trim()}`);
 
     if (!client.userName) {
-      client.userName = data.toString().trim();
-      user = client.userName;
+      if (data.trim().toLowerCase().includes('admin') || 
+        clientInfo.find(index => index.userName === data.trim().toLowerCase())) { 
+        client.write(`${system}: Invalid username\n`);
 
-      client.write(`${system}: Welcome ${user}\n`);
+      } else {
+        client.userName = data.toString().trim();
+        user = client.userName;
+        client.write(`${system}: Welcome ${user}\n`);
+      }
     //   client.write(`${system}: Enter your password\n`);
 
     // } else if (!client.password) {
