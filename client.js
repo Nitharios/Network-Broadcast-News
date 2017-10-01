@@ -1,7 +1,8 @@
 // jshint esversion:6
 const net = require('net');
+const PORT = process.env.PORT || 6969;
 
-const client = new net.connect(6969, () => {
+const client = new net.connect(PORT, () => {
   console.log('Connected to the server!');
 
   // handles what is input to the console
