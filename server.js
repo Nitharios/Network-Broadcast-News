@@ -24,11 +24,11 @@ const server = net.createServer((client) => {
   
   // reads what data comes from client
   client.on('data', (data) => {
-    console.log(`[${user}]: ${data.slice(0, data.length-1).toString()}`);
+    console.log(`[${user}]: ${data.toString().trim()}`);
 
     if (!client.userName) {
-      client.userName = `${data.trim().toString()}`;
-      user = data.slice(0, data.length-1);
+      client.userName = data.toString().trim();
+      user = client.userName;
 
       client.write(`${system}: Welcome ${user}\n`);
     //   client.write(`${system}: Enter your password\n`);
@@ -39,7 +39,7 @@ const server = net.createServer((client) => {
 
       console.log(`numStored: ${clientInfo.length}`);
     
-    } else sendToAll(`${client.userName}`, data.slice(0, data.length-1));
+    } else sendToAll(`${client.userName}`, data);
   });
 
   // handles input from Server console
@@ -47,8 +47,8 @@ const server = net.createServer((client) => {
     const data = process.stdin.read();
     if (data !== null) {
 
-      console.log(`${admin}:`, data.slice(0, data.length-1).toString());
-      sendToAll(`${admin}`, data.slice(0, data.length-1));
+      console.log(`[${admin}]:`, data.toString().trim());
+      sendToAll(`${admin}`, data);
       // client.pipe(client);
     }
   });
@@ -70,7 +70,7 @@ server.listen(PORT, () => {
 /////// NON-SERVER SPECIFIC FUNCTIONS //////
 function sendToAll(user, data) {
   clientInfo.forEach(function(clientData) {
-    clientData.write(`[${user}]: ${data.toString()}\n`);
+    clientData.write(`[${user}]: ${data.toString().trim()}\n`);
   });
 }
 
